@@ -1,0 +1,46 @@
+{
+  "name": "volt-market",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write src next.config.ts",
+    "format:check": "prettier --check src next.config.ts",
+    "db:migrate": "node scripts/run.mjs database",
+    "db:seed": "node scripts/run.mjs database --seed",
+    "db:admin": "node scripts/run.mjs database --admin",
+    "worker": "node scripts/run.mjs worker",
+    "lint": "eslint src scripts tests",
+    "test": "node scripts/run.mjs test",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build",
+    "preflight": "node scripts/run.mjs preflight"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "lucide-react": "^0.468.0",
+    "next": "^16.0.0",
+    "nodemailer": "^10.0.10",
+    "pg": "^8.23.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.4",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.5",
+    "prettier": "^3.9.7",
+    "tsx": "^4.23.13",
+    "typescript": "^5.7.0"
+  },
+  "type": "module"
+}
