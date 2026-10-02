@@ -1,0 +1,38 @@
+services:
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mada
+      POSTGRES_USER: mada
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mada -d mada"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgresql://mada:${POSTGRES_PASSWORD}@database:5432/mada
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgresql://mada:${POSTGRES_PASSWORD}@database:5432/mada
+    command: ["npm", "run", "worker"]
+    depends_on:
+      database:
+        condition: service_healthy
+volumes:
+  postgres_data:
