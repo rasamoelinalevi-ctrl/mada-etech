@@ -6,46 +6,68 @@ import { ShopShell, categoryIcons } from "@/components/shop-shell";
 import { ProductGrid, SectionTitle } from "@/components/product-card";
 import { useStore } from "@/components/store-provider";
 import { categories, money } from "@/lib/data";
+import { useEffect, useState } from "react";
 export default function Home() {
   const { products, settings } = useStore();
   const live = products.filter((p) => p.active);
   const featured = live.find((p) => p.featured) || live[0];
+  const slides = live.filter((p) => p.featured).slice(0, 4);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
+  useEffect(() => {
+    if (slides.length < 2) return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") setSlideIndex((i) => (i + 1) % slides.length);
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
   return (
     <ShopShell>
       <div className="container home">
         <div className="hero-grid">
-          <section className="hero-main">
+          <section className="hero-main" aria-label="Sélection à découvrir" aria-roledescription="carrousel">
             <div className="hero-copy">
               <span className="hero-label">
                 <span /> L’UNIVERS MADA E-TECH
               </span>
-              <h1>{settings.heroTitle}</h1>
-              <p>{settings.heroText}</p>
+              <h1>{slideIndex === 0 ? settings.heroTitle : slide?.name}</h1>
+              <p>{slideIndex === 0 ? settings.heroText : slide?.description}</p>
               <Link
-                href={featured ? "/produit/" + featured.id : "/catalogue"}
+                href={slide ? "/produit/" + slide.id : "/catalogue"}
                 className="button primary-cta"
               >
-                Découvrir {featured?.name || "le catalogue"}{" "}
+                Découvrir {slide?.name || "le catalogue"}{" "}
                 <ArrowUpRight size={19} />
               </Link>
               <div className="hero-price">
-                À partir de <strong>{money(featured?.price || 0)}</strong>
+                À partir de <strong>{money(slide?.price || 0)}</strong>
               </div>
             </div>
             <div className="hero-art">
               <span className="hero-orbit" />
               <span className="hero-bigtype">MAX</span>
               <Image
-                src={featured?.image || "/images/airpods-max.webp"}
-                alt={featured?.name || "Sélection électronique"}
+                src={slide?.image || "/images/airpods-max.webp"}
+                alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
                 width="550"
                 height="550"
               />
               <span className="hero-caption">
-                {featured?.name} <span>NOTRE SÉLECTION</span>
+                {slide?.name} <span>NOTRE SÉLECTION</span>
               </span>
             </div>
+            {slides.length > 1 && (
+              <div className="hero-carousel-controls" aria-label="Choisir une sélection">
+                {slides.map((item, index) => (
+                  <button type="button" key={item.id}
+                    className={index === slideIndex ? "active" : ""}
+                    aria-label={`Afficher ${item.name}`}
+                    aria-current={index === slideIndex ? "true" : undefined}
+                    onClick={() => setSlideIndex(index)} />
+                ))}
+              </div>
+            )}
           </section>
           <div className="hero-side">
             <Link
