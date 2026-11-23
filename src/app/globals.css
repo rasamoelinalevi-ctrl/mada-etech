@@ -2720,6 +2720,76 @@ footer {
   outline: 2px solid white;
   outline-offset: 3px;
 }
+.hero-slide-copy {
+  animation: hero-copy-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-art > .hero-slide-product {
+  animation: hero-product-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-carousel-arrows {
+  position: absolute;
+  z-index: 5;
+  right: 18px;
+  bottom: 15px;
+  display: flex;
+  gap: 8px;
+}
+.hero-carousel-arrows button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ffffff35;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: #ffffff12;
+  backdrop-filter: blur(8px);
+}
+.hero-carousel-arrows button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+.hero-carousel-progress {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  background: #ffffff12;
+}
+.hero-carousel-progress > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary);
+  transform-origin: left;
+  animation: hero-progress 6s linear both;
+}
+.hero-carousel-progress.paused > span {
+  animation-play-state: paused;
+}
+@keyframes hero-copy-in {
+  from { opacity: 0; transform: translateX(-22px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes hero-product-in {
+  from { opacity: 0; transform: translateX(34px) scale(0.92) rotate(-7deg); }
+  to { opacity: 1; transform: translateX(0) scale(1) rotate(-12deg); }
+}
+@keyframes hero-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide-copy,
+  .hero-art > .hero-slide-product,
+  .hero-carousel-progress > span {
+    animation: none;
+  }
+}
 .hero-copy {
   width: 58%;
   padding-left: 32px;

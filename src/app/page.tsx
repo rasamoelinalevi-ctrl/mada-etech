@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ArrowRight, Zap } from "lucide-react";
+import { ArrowUpRight, ArrowRight, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import { ShopShell, categoryIcons } from "@/components/shop-shell";
 import { ProductGrid, SectionTitle } from "@/components/product-card";
 import { useStore } from "@/components/store-provider";
@@ -13,20 +13,33 @@ export default function Home() {
   const featured = live.find((p) => p.featured) || live[0];
   const slides = live.filter((p) => p.featured).slice(0, 4);
   const [slideIndex, setSlideIndex] = useState(0);
+  const [carouselPaused, setCarouselPaused] = useState(false);
   const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
-  useEffect(() => {
+  const changeSlide = (direction: number) => {
     if (slides.length < 2) return;
+    setSlideIndex((index) => (index + direction + slides.length) % slides.length);
+  };
+  useEffect(() => {
+    if (slides.length < 2 || carouselPaused) return;
     const timer = window.setInterval(() => {
       if (document.visibilityState === "visible") setSlideIndex((i) => (i + 1) % slides.length);
     }, 6000);
     return () => window.clearInterval(timer);
-  }, [slides.length]);
+  }, [slides.length, carouselPaused]);
   return (
     <ShopShell>
       <div className="container home">
         <div className="hero-grid">
-          <section className="hero-main" aria-label="Sélection à découvrir" aria-roledescription="carrousel">
-            <div className="hero-copy">
+          <section
+            className="hero-main"
+            aria-label="Sélection à découvrir"
+            aria-roledescription="carrousel"
+            onMouseEnter={() => setCarouselPaused(true)}
+            onMouseLeave={() => setCarouselPaused(false)}
+            onFocusCapture={() => setCarouselPaused(true)}
+            onBlurCapture={() => setCarouselPaused(false)}
+          >
+            <div className="hero-copy hero-slide-copy" key={`copy-${slide?.id || "default"}`}>
               <span className="hero-label">
                 <span /> L’UNIVERS MADA E-TECH
               </span>
@@ -47,6 +60,8 @@ export default function Home() {
               <span className="hero-orbit" />
               <span className="hero-bigtype">MAX</span>
               <Image
+                key={slide?.id || "default"}
+                className="hero-slide-product"
                 src={slide?.image || "/images/airpods-max.webp"}
                 alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
@@ -58,15 +73,28 @@ export default function Home() {
               </span>
             </div>
             {slides.length > 1 && (
-              <div className="hero-carousel-controls" aria-label="Choisir une sélection">
-                {slides.map((item, index) => (
-                  <button type="button" key={item.id}
-                    className={index === slideIndex ? "active" : ""}
-                    aria-label={`Afficher ${item.name}`}
-                    aria-current={index === slideIndex ? "true" : undefined}
-                    onClick={() => setSlideIndex(index)} />
-                ))}
-              </div>
+              <>
+                <div className="hero-carousel-arrows">
+                  <button type="button" aria-label="Sélection précédente" onClick={() => changeSlide(-1)}>
+                    <ChevronLeft size={21} />
+                  </button>
+                  <button type="button" aria-label="Sélection suivante" onClick={() => changeSlide(1)}>
+                    <ChevronRight size={21} />
+                  </button>
+                </div>
+                <div className="hero-carousel-controls" aria-label="Choisir une sélection">
+                  {slides.map((item, index) => (
+                    <button type="button" key={item.id}
+                      className={index === slideIndex ? "active" : ""}
+                      aria-label={`Afficher ${item.name}`}
+                      aria-current={index === slideIndex ? "true" : undefined}
+                      onClick={() => setSlideIndex(index)} />
+                  ))}
+                </div>
+                <span className={`hero-carousel-progress${carouselPaused ? " paused" : ""}`} aria-hidden="true">
+                  <span key={`progress-${slide?.id || "default"}`} />
+                </span>
+              </>
             )}
           </section>
           <div className="hero-side">
