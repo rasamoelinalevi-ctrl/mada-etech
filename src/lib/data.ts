@@ -10,6 +10,7 @@ export type Product = {
   oldPrice: number;
   stock: number;
   image: string;
+  images?: string[];
   description: string;
   specs: Record<string, string>;
   isNew: boolean;

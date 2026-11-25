@@ -15,6 +15,7 @@ const blank: Product = {
   oldPrice: 0,
   stock: 1,
   image: "/images/iphone.webp",
+  images: [],
   description: "",
   specs: {},
   isNew: true,

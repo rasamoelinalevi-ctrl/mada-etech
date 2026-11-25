@@ -21,6 +21,7 @@ export const productSchema = z
           /^data:image\/(webp|png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(s),
         "Image non autorisée",
       ),
+    images: z.array(z.string().max(1500000)).max(8).optional(),
     description: text(5, 10000),
     specs: z.record(text(1, 80), text(0, 500)),
     isNew: z.boolean(),

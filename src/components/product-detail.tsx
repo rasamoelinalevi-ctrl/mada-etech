@@ -22,7 +22,8 @@ export function ProductDetail({
   initialProduct?: Product;
 }) {
   const { products, add, favorite, favorites, ready } = useStore(),
-    [qty, setQty] = useState(1);
+    [qty, setQty] = useState(1),
+    [selectedImage, setSelectedImage] = useState(0);
   const p = ready
     ? products.find((x) => x.id === id && x.active)
     : initialProduct;
@@ -33,8 +34,33 @@ export function ProductDetail({
         {p ? (
           <>
             <div className="detail-grid">
-              <div className="detail-image">
-                <Image src={p.image} alt={p.name} width="600" height="500" />
+              <div className="detail-gallery">
+                <div className="detail-image">
+                  <Image
+                    key={(p.images?.length ? p.images : [p.image])[selectedImage]}
+                    src={(p.images?.length ? p.images : [p.image])[selectedImage]}
+                    alt={`${p.name} — vue ${selectedImage + 1}`}
+                    width={700}
+                    height={600}
+                    priority
+                  />
+                </div>
+                {(p.images?.length || 0) > 1 && (
+                  <div className="detail-thumbnails" aria-label="Images du produit">
+                    {p.images!.map((image, index) => (
+                      <button
+                        type="button"
+                        key={`${image}-${index}`}
+                        className={index === selectedImage ? "active" : ""}
+                        aria-label={`Afficher la vue ${index + 1}`}
+                        aria-pressed={index === selectedImage}
+                        onClick={() => setSelectedImage(index)}
+                      >
+                        <Image src={image} alt="" width={92} height={78} />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="detail-info">
                 <Link

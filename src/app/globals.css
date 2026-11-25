@@ -1034,6 +1034,7 @@ footer {
   gap: 65px;
   align-items: start;
 }
+.detail-gallery { min-width: 0; }
 .detail-image {
   border-radius: 14px;
   background: var(--light);
@@ -1044,7 +1045,28 @@ footer {
 .detail-image img {
   width: 90%;
   height: 90%;
+  object-fit: contain;
 }
+.detail-thumbnails {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding: 2px;
+}
+.detail-thumbnails button {
+  flex: 0 0 94px;
+  height: 82px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.detail-thumbnails button:hover { transform: translateY(-2px); border-color: var(--accent); }
+.detail-thumbnails button.active { border: 2px solid var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 16%, transparent); }
+.detail-thumbnails img { width: 100%; height: 100%; object-fit: contain; }
 .detail-info h1 {
   font-size: 34px;
   letter-spacing: -1px;

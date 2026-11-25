@@ -12,6 +12,7 @@
     "db:migrate": "node scripts/run.mjs database",
     "db:seed": "node scripts/run.mjs database --seed",
     "db:admin": "node scripts/run.mjs database --admin",
+    "catalog:import": "node scripts/run.mjs import-products",
     "worker": "node scripts/run.mjs worker",
     "lint": "eslint src scripts tests",
     "test": "node scripts/run.mjs test",

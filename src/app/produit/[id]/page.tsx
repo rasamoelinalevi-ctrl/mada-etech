@@ -32,7 +32,9 @@ export default async function Page({
     name: p.name,
     description: p.description,
     sku: p.sku,
-    image: p.image.startsWith("/") ? base + p.image : undefined,
+    image: (p.images?.length ? p.images : [p.image]).map((image) =>
+      image.startsWith("/") ? base + image : image,
+    ),
     offers: {
       "@type": "Offer",
       price: p.price,
