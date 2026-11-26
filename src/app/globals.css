@@ -10,6 +10,28 @@
   --light: #f5f6fa;
   --radius: 14px;
 }
+/* Cohesive interaction motion across storefront and touch devices. */
+@media (prefers-reduced-motion: no-preference) {
+  .product-card, .category-grid a, .brand-card, .promo-tile, .wide-promo {
+    transition: transform .32s cubic-bezier(.22,1,.36,1), box-shadow .32s ease, border-color .32s ease;
+  }
+  .product-card:hover, .category-grid a:hover, .brand-card:hover, .promo-tile:hover, .wide-promo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 34px #0a11351c;
+  }
+  .button, .add-button, .round-link, .navigation a, .category-rail nav a {
+    transition: transform .24s cubic-bezier(.22,1,.36,1), background-color .24s ease, color .24s ease, box-shadow .24s ease;
+  }
+  .button:hover, .add-button:hover, .round-link:hover { transform: translateY(-2px); }
+  .button:active, .add-button:active, .round-link:active, .product-card:active { transform: scale(.98); }
+  @media (hover: none) {
+    .product-card:hover, .category-grid a:hover, .brand-card:hover, .promo-tile:hover, .wide-promo:hover { transform: none; box-shadow: none; }
+    .button:active, .add-button:active, .round-link:active, .category-grid a:active, .brand-card:active { transform: scale(.97); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-product-float, .hero-art > .hero-slide-product, .hero-art::after { animation: none !important; transition: none !important; }
+}
 * {
   box-sizing: border-box;
 }
