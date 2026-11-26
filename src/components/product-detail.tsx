@@ -14,6 +14,7 @@ import { ShopShell, Breadcrumb } from "./shop-shell";
 import { ProductGrid, SectionTitle } from "./product-card";
 import { useStore } from "./store-provider";
 import { money, type Product } from "@/lib/data";
+import { Modal } from './modal';
 export function ProductDetail({
   id,
   initialProduct,
@@ -23,7 +24,8 @@ export function ProductDetail({
 }) {
   const { products, add, favorite, favorites, ready } = useStore(),
     [qty, setQty] = useState(1),
-    [selectedImage, setSelectedImage] = useState(0);
+    [selectedImage, setSelectedImage] = useState(0),
+    [zoom, setZoom] = useState(false);
   const p = ready
     ? products.find((x) => x.id === id && x.active)
     : initialProduct;
@@ -35,10 +37,10 @@ export function ProductDetail({
           <>
             <div className="detail-grid">
               <div className="detail-gallery">
-                <div className="detail-image">
+                <div className="detail-image" role="button" tabIndex={0} aria-label="Agrandir la photo" onClick={() => setZoom(true)} onKeyDown={(e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setZoom(true); } }}>
                   <Image
                     key={(p.images?.length ? p.images : [p.image])[selectedImage]}
-                    src={(p.images?.length ? p.images : [p.image])[selectedImage]}
+                    src={(p.images?.length ? p.images : [p.image])[selectedImage] || p.image}
                     alt={`${p.name} — vue ${selectedImage + 1}`}
                     width={700}
                     height={600}
@@ -62,6 +64,7 @@ export function ProductDetail({
                   </div>
                 )}
               </div>
+              {zoom && <Modal title={p.name} onClose={() => setZoom(false)}><Image src={(p.images?.length ? p.images : [p.image])[selectedImage] || p.image} alt={p.name} width={1200} height={1000} style={{width:'100%',height:'auto',objectFit:'contain'}} /></Modal>}
               <div className="detail-info">
                 <Link
                   className="eyebrow brand-text"

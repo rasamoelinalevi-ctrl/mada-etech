@@ -23,6 +23,14 @@ export async function POST(
     const input = await body(req);
     if (action === "product") {
       const p = productSchema.parse(input);
+      const galleryMedia: { id: string; bytes: Buffer }[] = [];
+      p.images = await Promise.all((p.images || []).map(async (image) => {
+        if (!image.startsWith('data:')) return image;
+        const bytes = await sharp(Buffer.from(image.split(',')[1], 'base64'), { limitInputPixels: 16000000 }).rotate().resize({ width: 1200, height: 1200, fit: 'inside', withoutEnlargement: true }).webp({ quality: 85 }).toBuffer();
+        const id = 'upload-' + randomUUID() + '.webp';
+        galleryMedia.push({ id, bytes });
+        return '/images/' + id;
+      }));
       let media: { id: string; bytes: Buffer } | undefined;
       if (p.image.startsWith("data:")) {
         const bytes = await sharp(
@@ -42,6 +50,7 @@ export async function POST(
         p.image = "/images/" + media.id;
       }
       await db().transaction(async (tx) => {
+        for (const item of galleryMedia) await tx.query('INSERT INTO media(id,bytes) VALUES($1,$2)', [item.id, item.bytes]);
         if (media)
           await tx.query("INSERT INTO media(id,bytes) VALUES($1,$2)", [
             media.id,

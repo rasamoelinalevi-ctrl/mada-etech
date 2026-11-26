@@ -277,6 +277,7 @@ function ProductEditor({
             oldPrice,
             stock,
             image,
+            images: String(f.get('gallery') || '').split('\n').map(x => x.trim()).filter(Boolean),
             specs,
             isNew: f.has("isNew"),
             featured: f.has("featured"),
@@ -414,6 +415,10 @@ function ProductEditor({
               </label>
             </div>
           </div>
+          <label className="field full">
+            Photos supplémentaires (une adresse /images/ par ligne, 8 maximum)
+            <textarea name="gallery" defaultValue={(product.images || []).join('\n')} rows={4} />
+          </label>
           <label className="field full">
             Description
             <textarea
