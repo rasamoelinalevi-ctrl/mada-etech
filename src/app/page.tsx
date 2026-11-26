@@ -13,7 +13,7 @@ export default function Home() {
   const live = products.filter((p) => p.active);
   const popularBrands = [...new Set(live.map((p) => p.brand))].slice(0, 3);
   const featured = live.find((p) => p.featured) || live[0];
-  const preparedIds = ["import-acer-acer-aspire-go-15-i5-1334u", "import-aigo-3-en-1-aigo", "import-asus-ecran-portable", "import-awei-speaker-bluetooth-awei"];
+  const preparedIds = ["import-acer-acer-aspire-go-15-i5-1334u", "import-canon-canon-laserjet-6030b", "import-asus-ecran-portable", "import-awei-speaker-bluetooth-awei"];
   const prepared = preparedIds.map((id) => live.find((product) => product.id === id)).filter((product): product is (typeof live)[number] => Boolean(product));
   const slides = prepared.length ? prepared : live.filter((p) => p.featured).slice(0, 4);
   const [slideIndex, setSlideIndex] = useState(0);
@@ -21,7 +21,7 @@ export default function Home() {
   const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
   const homeCutouts: Record<string, string> = {
     "import-acer-acer-aspire-go-15-i5-1334u": "/images/products/acer-home-cutout.webp",
-    "import-aigo-3-en-1-aigo": "/images/products/import-aigo-3-en-1-aigo-cutout.png",
+    "import-canon-canon-laserjet-6030b": "/images/products/import-canon-canon-laserjet-6030b-cutout.png",
     "import-asus-ecran-portable": "/images/products/import-asus-ecran-portable-cutout.png",
     "import-awei-speaker-bluetooth-awei": "/images/products/import-awei-speaker-bluetooth-awei-cutout.png",
   };
