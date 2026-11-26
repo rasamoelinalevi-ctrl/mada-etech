@@ -21,9 +21,9 @@ export default function Home() {
   const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
   const homeCutouts: Record<string, string> = {
     "import-acer-acer-aspire-go-15-i5-1334u": "/images/products/acer-home-cutout.webp",
-    "import-canon-canon-laserjet-6030b": "/images/products/import-canon-canon-laserjet-6030b-cutout.png",
-    "import-asus-ecran-portable": "/images/products/import-asus-ecran-portable-cutout.png",
-    "import-awei-speaker-bluetooth-awei": "/images/products/import-awei-speaker-bluetooth-awei-cutout.png",
+    "import-canon-canon-laserjet-6030b": "/images/products/import-canon-canon-laserjet-6030b-cutout.webp",
+    "import-asus-ecran-portable": "/images/products/import-asus-ecran-portable-cutout.webp",
+    "import-awei-speaker-bluetooth-awei": "/images/products/import-awei-speaker-bluetooth-awei-cutout.webp",
   };
   const changeSlide = (direction: number) => {
     if (slides.length < 2) return;
