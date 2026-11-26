@@ -78,6 +78,7 @@ export default function Home() {
                 src={homeCutouts[slide?.id || ""] || slide?.image || '/images/products/acer-home-cutout.webp'}
                 alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
+                unoptimized
                 priority
                 sizes="(max-width: 760px) 86vw, 47vw"
                 width="550"
