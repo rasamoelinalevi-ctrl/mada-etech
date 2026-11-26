@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { ShopShell, Breadcrumb } from "@/components/shop-shell";
 import { useStore } from "@/components/store-provider";
-import { BrandLogo, hasBrandLogo } from "@/components/brand-logo";
+import { BrandLogo } from "@/components/brand-logo";
 export default function Page() {
   const { products } = useStore();
   const brands = [
@@ -25,8 +25,7 @@ export default function Page() {
               key={b}
               href={"/catalogue?marque=" + encodeURIComponent(b)}
             >
-              {hasBrandLogo(b) && <div className="brand-card-logo"><BrandLogo brand={b} /></div>}
-              {!hasBrandLogo(b) && <strong>{b}</strong>}
+              <div className="brand-card-logo"><BrandLogo brand={b} /></div>
               <p>
                 {products.filter((p) => p.active && p.brand === b).length}{" "}
                 {products.filter((p) => p.active && p.brand === b).length === 1 ? "produit à découvrir" : "produits à découvrir"}

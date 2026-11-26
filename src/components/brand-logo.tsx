@@ -28,6 +28,8 @@ export function BrandLogo({ brand }: { brand: string }) {
       height={60}
     />
   ) : (
-    <strong className="brand-logo-fallback">{brand}</strong>
+    <span className="brand-logo-fallback" role="img" aria-label={`Logo ${brand}`}>
+      {brand}
+    </span>
   );
 }
