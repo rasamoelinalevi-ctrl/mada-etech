@@ -16,6 +16,7 @@ import { useStore } from "./store-provider";
 import { money, type Product } from "@/lib/data";
 import { Modal } from "./modal";
 import { ProductDescription, descriptionLines } from "./product-description";
+import { BrandLogo } from "./brand-logo";
 export function ProductDetail({
   id,
   initialProduct,
@@ -125,6 +126,7 @@ export function ProductDetail({
                 </Modal>
               )}
               <div className="detail-info">
+                <div className="detail-brand-logo"><BrandLogo brand={p.brand} /></div>
                 <Link
                   className="eyebrow brand-text"
                   href={"/catalogue?marque=" + encodeURIComponent(p.brand)}
