@@ -130,6 +130,7 @@ export default function Home() {
                 </span>
               </div>
               <Image
+                className="promo-product-float"
                 src="/images/iphone.webp"
                 alt="iPhone 13 Pro"
                 width="230"
@@ -216,8 +217,9 @@ export default function Home() {
             </Link>
           </div>
           <Image
-            src="/images/macbook.webp"
-            alt="MacBook Pro 14 pouces"
+            className="promo-product-float"
+            src="/images/products/acer-home-cutout.webp"
+            alt="Acer Aspire Go"
             width="540"
             height="340"
           />
