@@ -949,8 +949,9 @@ footer {
 }
 .catalog-layout {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 34px;
+  min-width: 0;
 }
 .filters {
   border: 1px solid var(--line);
@@ -1007,8 +1008,10 @@ footer {
   font-size: 12px;
 }
 .catalog-layout .product-grid {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
 }
+.catalog-layout .product-card { min-width: 0; }
 .catalog-layout .product-visual {
   height: 205px;
 }
