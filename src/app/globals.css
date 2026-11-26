@@ -1048,6 +1048,7 @@ footer {
   min-width: 0;
 }
 .catalog-layout .product-card { min-width: 0; }
+.mobile-filter-toggle { display: none; }
 .catalog-layout .product-visual {
   height: 205px;
 }
@@ -2519,12 +2520,17 @@ footer {
     grid-template-columns: 1fr;
     gap: 20px;
   }
+  .mobile-filter-toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; color: var(--primary); font-weight: 700; background: #f5f7fc; }
+  .mobile-filter-toggle span { font-size: 22px; line-height: 1; }
   .filters {
     padding: 15px;
-    display: flex;
+    display: none;
     flex-wrap: wrap;
     gap: 15px;
   }
+  .filters.filters-open { display: flex; }
+  .catalog-layout > div:last-child { min-width: 0; }
+  .catalog-layout .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-group {
     margin: 0;
     padding: 0;

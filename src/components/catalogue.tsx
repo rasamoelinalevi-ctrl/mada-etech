@@ -39,6 +39,7 @@ function CatalogueContent({ mode }: { mode: string }) {
     [stock, setStock] = useState(false),
     [sort, setSort] = useState("featured"),
     [page, setPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const query = params.get("q") || "";
   const title =
     mode === "new"
@@ -100,7 +101,11 @@ function CatalogueContent({ mode }: { mode: string }) {
         </div>
       </div>
       <div className="catalog-layout">
-        <aside className="filters" aria-label="Filtres du catalogue">
+        <button className="mobile-filter-toggle" type="button" aria-expanded={filtersOpen} aria-controls="catalog-filters" onClick={() => setFiltersOpen(!filtersOpen)}>
+          Filtres {cats.length + brands.length + Number(stock) + Number(max !== Number.MAX_SAFE_INTEGER) ? `(${cats.length + brands.length + Number(stock) + Number(max !== Number.MAX_SAFE_INTEGER)})` : ""}
+          <span aria-hidden="true">{filtersOpen ? "−" : "+"}</span>
+        </button>
+        <aside id="catalog-filters" className={`filters${filtersOpen ? " filters-open" : ""}`} aria-label="Filtres du catalogue">
           <div className="filter-group">
             <h3>Catégories</h3>
             {categories.map((c) => (
