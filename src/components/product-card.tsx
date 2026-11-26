@@ -1,12 +1,22 @@
 "use client";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Heart, Plus, ArrowUpRight } from "lucide-react";
 import { type Product, money } from "@/lib/data";
 import { useStore } from "./store-provider";
 import { BrandLogo, hasBrandLogo } from "./brand-logo";
 export function ProductCard({ product: p }: { product: Product }) {
-  const { add, favorite, favorites } = useStore();
+  const { add, favorite, favorites, cart } = useStore();
+  const addRef = useRef<HTMLButtonElement>(null);
+  const quantity = cart.find((item) => item.id === p.id)?.quantity || 0;
+  const previousQuantity = useRef(quantity);
+  useEffect(() => {
+    if (quantity > previousQuantity.current && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      addRef.current?.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.25) rotate(12deg)' }, { transform: 'scale(1)' }], { duration: 450, easing: 'ease-out' });
+    }
+    previousQuantity.current = quantity;
+  }, [quantity]);
   const discount =
     p.oldPrice > p.price ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
   return (
@@ -64,7 +74,8 @@ export function ProductCard({ product: p }: { product: Product }) {
           </div>
           <button
             className="add-button"
-            disabled={!p.stock}
+            ref={addRef}
+            disabled={quantity >= p.stock}
             onClick={() => add(p.id)}
             aria-label={"Ajouter au panier : " + p.name}
           >

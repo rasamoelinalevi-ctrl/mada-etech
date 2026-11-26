@@ -69,7 +69,11 @@ export default function Home() {
                 À partir de <strong>{money(slide?.price || 0)}</strong>
               </div>
             </div>
-            <div className="hero-art">
+            <div className="hero-art" onPointerMove={(event) => {
+              if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+              const box = event.currentTarget.getBoundingClientRect();
+              event.currentTarget.style.rotate = `${((event.clientX - box.left) / box.width - .5) * 6}deg`;
+            }} onPointerLeave={(event) => { event.currentTarget.style.rotate = '0deg'; }}>
               <span className="hero-orbit" />
               <span className="hero-bigtype">MAX</span>
               <Image

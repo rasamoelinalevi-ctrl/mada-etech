@@ -11,6 +11,11 @@
   --radius: 14px;
 }
 @media (prefers-reduced-motion: no-preference) {
+  .hero-art { transition: rotate .3s ease-out; }
+  .shop-layout .product-card.scroll-revealed:nth-child(3n+2) { animation-delay: .1s; animation-fill-mode: backwards; }
+  .shop-layout .product-card.scroll-revealed:nth-child(3n) { animation-delay: .2s; animation-fill-mode: backwards; }
+}
+@media (prefers-reduced-motion: no-preference) {
   .shop-layout .scroll-pending { opacity: 0; translate: 0 44px; animation: none; }
   .shop-layout .scroll-revealed { animation: scroll-arrive .85s cubic-bezier(.22,1,.36,1); }
   @keyframes scroll-arrive {
