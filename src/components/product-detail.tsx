@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import {
   Heart,
@@ -26,7 +26,9 @@ export function ProductDetail({
   const { products, add, favorite, favorites, ready } = useStore(),
     [qty, setQty] = useState(1),
     [selectedImage, setSelectedImage] = useState(0),
-    [zoom, setZoom] = useState(false);
+    [zoom, setZoom] = useState(false),
+    [hoverZoom, setHoverZoom] = useState(false),
+    [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const p = ready
     ? products.find((x) => x.id === id && x.active)
     : initialProduct;
@@ -39,10 +41,26 @@ export function ProductDetail({
             <div className="detail-grid">
               <div className="detail-gallery">
                 <div
-                  className="detail-image"
+                  className={`detail-image${hoverZoom ? " is-zoomed" : ""}`}
                   role="button"
                   tabIndex={0}
                   aria-label="Agrandir la photo"
+                  style={{
+                    "--zoom-x": `${zoomPosition.x}%`,
+                    "--zoom-y": `${zoomPosition.y}%`,
+                  } as CSSProperties}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType === "mouse") setHoverZoom(true);
+                  }}
+                  onPointerMove={(e) => {
+                    if (e.pointerType !== "mouse") return;
+                    const bounds = e.currentTarget.getBoundingClientRect();
+                    setZoomPosition({
+                      x: Math.max(0, Math.min(100, ((e.clientX - bounds.left) / bounds.width) * 100)),
+                      y: Math.max(0, Math.min(100, ((e.clientY - bounds.top) / bounds.height) * 100)),
+                    });
+                  }}
+                  onPointerLeave={() => setHoverZoom(false)}
                   onClick={() => setZoom(true)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -79,6 +97,7 @@ export function ProductDetail({
                         aria-label={`Afficher la vue ${index + 1}`}
                         aria-pressed={index === selectedImage}
                         onClick={() => setSelectedImage(index)}
+                        onMouseEnter={() => setSelectedImage(index)}
                       >
                         <Image src={image} alt="" width={92} height={78} />
                       </button>
