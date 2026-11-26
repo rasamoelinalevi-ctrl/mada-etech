@@ -2435,13 +2435,15 @@ footer {
   }
   .wide-promo > img {
     position: absolute;
-    right: -58px;
-    bottom: 5px;
-    width: 65%;
-    height: 220px;
+    right: 8px;
+    bottom: 18px;
+    width: 46%;
+    height: 175px;
+    object-fit: contain;
+    object-position: center;
   }
   .wide-promo > div {
-    width: 65%;
+    width: 52%;
   }
   .contact-banner {
     gap: 13px;
