@@ -16,6 +16,7 @@ const blank: Product = {
   stock: 1,
   image: "/images/iphone.webp",
   images: [],
+  variantOptions: {},
   description: "",
   specs: {},
   isNew: true,
@@ -265,10 +266,26 @@ function ProductEditor({
               })
               .filter(([k, v]) => k && v),
           );
+          const variantOptions = Object.fromEntries(
+            String(f.get("variantOptions"))
+              .split("\n")
+              .filter((x) => x.includes(":"))
+              .map((x) => {
+                const i = x.indexOf(":");
+                return [x.slice(0, i).trim(), x.slice(i + 1).trim()];
+              })
+              .filter(([k, v]) => k && v),
+          );
+          if (Object.keys(variantOptions).length > 6)
+            return setError("Un produit peut avoir au maximum six options de variante.");
+          const group = String(f.get("group")).trim();
+          if (Object.keys(variantOptions).length && !group)
+            return setError("Indiquez un groupe pour relier cette variante aux autres.");
           onSave({
             ...product,
             sku: String(f.get("sku")).trim(),
-            group: String(f.get("group")).trim(),
+            group,
+            variantOptions,
             name,
             brand,
             description,
@@ -302,6 +319,18 @@ function ProductEditor({
               maxLength={100}
               defaultValue={product.group || ""}
               placeholder="Ex. iphone-13-pro"
+            />
+            <small>Même identifiant pour toutes les déclinaisons du produit.</small>
+          </label>
+          <label className="field full">
+            Options de cette variante (une par ligne : Libellé : Valeur)
+            <textarea
+              name="variantOptions"
+              rows={3}
+              defaultValue={Object.entries(product.variantOptions || {})
+                .map(([k, v]) => k + " : " + v)
+                .join("\n")}
+              placeholder={"Couleur : Noir\nCapacité : 256 Go"}
             />
           </label>
           <label className="field full">

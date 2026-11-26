@@ -62,6 +62,17 @@ export async function POST(
             [p.id],
           )
         ).rows[0];
+        if (p.group && Object.keys(p.variantOptions).length) {
+          const duplicate = await tx.query(
+            "SELECT id FROM products WHERE id<>$1 AND data->>'group'=$2 AND data->'variantOptions'=$3::jsonb LIMIT 1",
+            [p.id, p.group, JSON.stringify(p.variantOptions)],
+          );
+          requireValue(
+            duplicate.rows.length === 0,
+            409,
+            "Cette combinaison de variantes existe déjà dans ce groupe.",
+          );
+        }
         if (existing) {
           requireValue(
             existing.version === p.version,

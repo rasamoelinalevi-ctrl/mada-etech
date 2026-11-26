@@ -153,6 +153,7 @@ for (const candidate of selected) {
     id,
     sku: id.toUpperCase(),
     group: "",
+    variantOptions: {},
     name: candidate.folder.trim(),
     brand: candidate.brand.trim(),
     category: categoryFor(candidate.folder, description),

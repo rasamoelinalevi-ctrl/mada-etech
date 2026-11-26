@@ -33,6 +33,27 @@ export function ProductDetail({
   const p = ready
     ? products.find((x) => x.id === id && x.active)
     : initialProduct;
+  const variants = p?.group
+    ? products.filter((x) => x.group === p.group && x.active)
+    : [];
+  const variantOptionNames = [
+    ...new Set(variants.flatMap((variant) => Object.keys(variant.variantOptions || {}))),
+  ];
+  const variantTarget = (option: string, value: string) => {
+    const matching = variants.filter(
+      (variant) => variant.variantOptions?.[option] === value,
+    );
+    return (
+      matching.find((variant) =>
+        variantOptionNames.every(
+          (name) =>
+            name === option ||
+            !p?.variantOptions?.[name] ||
+            variant.variantOptions?.[name] === p.variantOptions[name],
+        ),
+      ) || matching[0]
+    );
+  };
   return (
     <ShopShell>
       <div className="container page-content">
@@ -134,20 +155,50 @@ export function ProductDetail({
                   {hasBrandLogo(p.brand) ? p.category : `${p.brand} · ${p.category}`}
                 </Link>
                 <h1>{p.name}</h1>
-                {p.group && (
-                  <nav aria-label="Variantes">
-                    {products
-                      .filter((x) => x.group === p.group && x.active)
-                      .map((x) => (
+                {variants.length > 1 && variantOptionNames.length > 0 && (
+                  <div className="product-variants" aria-label="Variantes du produit">
+                    {variantOptionNames.map((option) => (
+                      <fieldset key={option}>
+                        <legend>
+                          {option} : <strong>{p.variantOptions?.[option] || "À choisir"}</strong>
+                        </legend>
+                        <div className="variant-values">
+                          {[...new Set(variants.map((variant) => variant.variantOptions?.[option]).filter(Boolean))].map((value) => {
+                            const target = variantTarget(option, value!);
+                            const selected = p.variantOptions?.[option] === value;
+                            return target ? (
+                              <Link
+                                key={value}
+                                className={`variant-choice${selected ? " selected" : ""}${!target.stock ? " unavailable" : ""}`}
+                                href={`/produit/${target.id}`}
+                                aria-current={selected ? "true" : undefined}
+                                title={!target.stock ? "Cette variante est épuisée" : undefined}
+                              >
+                                {value}
+                                {!target.stock && <span>Épuisé</span>}
+                              </Link>
+                            ) : null;
+                          })}
+                        </div>
+                      </fieldset>
+                    ))}
+                  </div>
+                )}
+                {variants.length > 1 && variantOptionNames.length === 0 && (
+                  <nav className="legacy-variants" aria-label="Modèles disponibles">
+                    <span>Modèles disponibles</span>
+                    <div>
+                      {variants.map((variant) => (
                         <Link
-                          className="button outline"
-                          key={x.id}
-                          href={"/produit/" + x.id}
-                          aria-current={x.id === p.id ? "page" : undefined}
+                          className={`variant-choice${variant.id === p.id ? " selected" : ""}${!variant.stock ? " unavailable" : ""}`}
+                          key={variant.id}
+                          href={`/produit/${variant.id}`}
+                          aria-current={variant.id === p.id ? "true" : undefined}
                         >
-                          {x.name}
+                          {variant.name}
                         </Link>
                       ))}
+                    </div>
                   </nav>
                 )}
                 <span className={"stock " + (!p.stock ? "out" : "")}>

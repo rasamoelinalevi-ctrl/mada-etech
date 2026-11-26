@@ -6,6 +6,10 @@ export const productSchema = z
     id: text(1, 100).regex(/^[a-zA-Z0-9_-]+$/),
     sku: text(1, 100),
     group: text(0, 100).default(""),
+    variantOptions: z
+      .record(text(1, 40), text(1, 100))
+      .refine((options) => Object.keys(options).length <= 6, "Six options de variante maximum")
+      .default({}),
     name: text(2),
     brand: text(),
     category: text(),

@@ -187,6 +187,7 @@ export function StoreProvider({
             ...p,
             sku: p.sku || p.id,
             group: p.group || "",
+            variantOptions: p.variantOptions || {},
           });
       }
       if (value.settings) await api("/api/admin/settings", value.settings);

@@ -1131,6 +1131,16 @@ footer {
   letter-spacing: -1px;
   margin: 10px 0;
 }
+.product-variants, .legacy-variants { margin: 22px 0; display: grid; gap: 16px; }
+.product-variants fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.product-variants legend, .legacy-variants > span { margin-bottom: 9px; color: var(--muted); font-size: 13px; }
+.product-variants legend strong { color: var(--ink); }
+.variant-values, .legacy-variants > div { display: flex; flex-wrap: wrap; gap: 9px; }
+.variant-choice { min-height: 42px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); display: inline-flex; flex-direction: column; justify-content: center; gap: 2px; font-size: 13px; transition: border-color .2s, box-shadow .2s, background .2s; }
+.variant-choice:hover { border-color: var(--accent); }
+.variant-choice.selected { border: 2px solid var(--accent); padding: 8px 12px; background: color-mix(in srgb, var(--accent) 7%, white); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 12%, transparent); }
+.variant-choice.unavailable { color: var(--muted); background: repeating-linear-gradient(135deg, #fff, #fff 6px, #f3f5f9 6px, #f3f5f9 8px); }
+.variant-choice span { font-size: 9px; color: #a15c58; text-transform: uppercase; letter-spacing: .04em; }
 .detail-price {
   display: flex;
   gap: 17px;

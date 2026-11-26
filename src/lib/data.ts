@@ -1,6 +1,7 @@
 export type Product = {
   sku?: string;
   group?: string;
+  variantOptions?: Record<string, string>;
   version?: number;
   id: string;
   name: string;
