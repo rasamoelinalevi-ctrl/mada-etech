@@ -195,8 +195,41 @@ export function ShopShell({ children }: { children: React.ReactNode }) {
     router = useRouter();
   const [query, setQuery] = useState("");
   const [menu, setMenu] = useState(false);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  useEffect(() => {
+    const root = shellRef.current;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!root || preference.matches || !('IntersectionObserver' in window)) return;
+    const observed = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        target.classList.remove('scroll-pending');
+        target.classList.add('scroll-revealed');
+        observer.unobserve(target);
+      });
+    }, { threshold: 0.05 });
+    const scan = () => {
+      root.querySelectorAll('.home > section, .product-card, .brand-card, .category-grid > a').forEach((element) => {
+        if (observed.has(element)) return;
+        observed.add(element);
+        // Keep the first screen immediately visible and avoid nested animations.
+        if (element.closest('.home > section') !== element && element.closest('.home > section')) return;
+        if (element.getBoundingClientRect().top < window.innerHeight) return;
+        element.classList.add('scroll-pending');
+        observer.observe(element);
+      });
+    };
+    scan();
+    const mutations = new MutationObserver(scan);
+    mutations.observe(root, { childList: true, subtree: true });
+    const revealAll = () => root.querySelectorAll('.scroll-pending').forEach((element) => element.classList.remove('scroll-pending'));
+    preference.addEventListener('change', revealAll);
+    return () => { observer.disconnect(); mutations.disconnect(); preference.removeEventListener('change', revealAll); revealAll(); };
+  }, [pathname]);
   return (
-    <div className="shop-layout">
+    <div className="shop-layout" ref={shellRef}>
       <Suspense fallback={null}>
         <CategoryRail open={menu} onClose={() => setMenu(false)} />
       </Suspense>

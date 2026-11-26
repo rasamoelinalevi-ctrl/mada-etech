@@ -10,6 +10,17 @@
   --light: #f5f6fa;
   --radius: 14px;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .shop-layout .scroll-pending { opacity: 0; translate: 0 20px; animation: none; }
+  .shop-layout .scroll-revealed { animation: scroll-arrive .55s cubic-bezier(.22,1,.36,1); }
+  @keyframes scroll-arrive {
+    from { opacity: 0; translate: 0 20px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-layout .scroll-pending { opacity: 1; translate: none; }
+}
 /* Cohesive interaction motion across storefront and touch devices. */
 @media (prefers-reduced-motion: no-preference) {
   .product-card, .category-grid a, .brand-card, .promo-tile, .wide-promo {
