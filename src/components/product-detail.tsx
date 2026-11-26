@@ -14,7 +14,8 @@ import { ShopShell, Breadcrumb } from "./shop-shell";
 import { ProductGrid, SectionTitle } from "./product-card";
 import { useStore } from "./store-provider";
 import { money, type Product } from "@/lib/data";
-import { Modal } from './modal';
+import { Modal } from "./modal";
+import { ProductDescription, descriptionLines } from "./product-description";
 export function ProductDetail({
   id,
   initialProduct,
@@ -37,10 +38,28 @@ export function ProductDetail({
           <>
             <div className="detail-grid">
               <div className="detail-gallery">
-                <div className="detail-image" role="button" tabIndex={0} aria-label="Agrandir la photo" onClick={() => setZoom(true)} onKeyDown={(e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setZoom(true); } }}>
+                <div
+                  className="detail-image"
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Agrandir la photo"
+                  onClick={() => setZoom(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setZoom(true);
+                    }
+                  }}
+                >
                   <Image
-                    key={(p.images?.length ? p.images : [p.image])[selectedImage]}
-                    src={(p.images?.length ? p.images : [p.image])[selectedImage] || p.image}
+                    key={
+                      (p.images?.length ? p.images : [p.image])[selectedImage]
+                    }
+                    src={
+                      (p.images?.length ? p.images : [p.image])[
+                        selectedImage
+                      ] || p.image
+                    }
                     alt={`${p.name} — vue ${selectedImage + 1}`}
                     width={700}
                     height={600}
@@ -48,7 +67,10 @@ export function ProductDetail({
                   />
                 </div>
                 {(p.images?.length || 0) > 1 && (
-                  <div className="detail-thumbnails" aria-label="Images du produit">
+                  <div
+                    className="detail-thumbnails"
+                    aria-label="Images du produit"
+                  >
                     {p.images!.map((image, index) => (
                       <button
                         type="button"
@@ -64,7 +86,25 @@ export function ProductDetail({
                   </div>
                 )}
               </div>
-              {zoom && <Modal title={p.name} onClose={() => setZoom(false)}><Image src={(p.images?.length ? p.images : [p.image])[selectedImage] || p.image} alt={p.name} width={1200} height={1000} style={{width:'100%',height:'auto',objectFit:'contain'}} /></Modal>}
+              {zoom && (
+                <Modal title={p.name} onClose={() => setZoom(false)}>
+                  <Image
+                    src={
+                      (p.images?.length ? p.images : [p.image])[
+                        selectedImage
+                      ] || p.image
+                    }
+                    alt={p.name}
+                    width={1200}
+                    height={1000}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Modal>
+              )}
               <div className="detail-info">
                 <Link
                   className="eyebrow brand-text"
@@ -98,7 +138,27 @@ export function ProductDetail({
                   <strong>{money(p.price)}</strong>
                   {p.oldPrice > p.price && <del>{money(p.oldPrice)}</del>}
                 </div>
-                <p className="detail-description">{p.description}</p>
+                <div className="product-essentials">
+                  <p className="product-summary">
+                    {descriptionLines(p.description)[0]?.text}
+                  </p>
+                  {Object.keys(p.specs).length > 0 && (
+                    <dl className="product-key-specs">
+                      {Object.entries(p.specs)
+                        .slice(0, 3)
+                        .map(([label, value]) => (
+                          <div key={label}>
+                            <dt>{label}</dt>
+                            <dd>{value}</dd>
+                          </div>
+                        ))}
+                    </dl>
+                  )}
+                  <a className="product-details-link" href="#product-details">
+                    Voir la description et les caractéristiques{" "}
+                    <span aria-hidden="true">↓</span>
+                  </a>
+                </div>
                 <div className="buy-row">
                   <div className="quantity">
                     <button
@@ -157,16 +217,30 @@ export function ProductDetail({
                 </div>
               </div>
             </div>
-            <section className="specs">
+            <section
+              className="specs product-details-section"
+              id="product-details"
+            >
               <h2>Dans les détails</h2>
-              <dl>
-                {Object.entries(p.specs).map(([key, value]) => (
-                  <div key={key}>
-                    <dt>{key}</dt>
-                    <dd>{value}</dd>
+              <div className="product-details-layout">
+                <article className="product-description-panel">
+                  <span className="eyebrow">À propos de ce produit</span>
+                  <ProductDescription description={p.description} />
+                </article>
+                {Object.keys(p.specs).length > 0 && (
+                  <div className="product-specifications-panel">
+                    <h3>Caractéristiques techniques</h3>
+                    <dl>
+                      {Object.entries(p.specs).map(([key, value]) => (
+                        <div key={key}>
+                          <dt>{key}</dt>
+                          <dd>{value}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </div>
-                ))}
-              </dl>
+                )}
+              </div>
             </section>
             <section className="related">
               <SectionTitle title="Vous aimerez aussi" href="/catalogue" />

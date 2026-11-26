@@ -1035,6 +1035,32 @@ footer {
   align-items: start;
 }
 .detail-gallery { min-width: 0; }
+.product-essentials { padding: 20px 0; border-top: 1px solid var(--line); }
+.product-summary { margin: 0 0 16px; color: var(--muted); font-size: 15px; line-height: 1.7; }
+.product-key-specs { margin: 0 0 16px; display: grid; gap: 10px; }
+.product-key-specs > div { display: grid; grid-template-columns: minmax(100px, 1fr) 1.6fr; gap: 16px; font-size: 13px; }
+.product-key-specs dt { color: var(--muted); }
+.product-key-specs dd { margin: 0; overflow-wrap: anywhere; }
+.product-details-link { color: var(--primary); font-size: 13px; font-weight: 600; display: inline-flex; gap: 12px; align-items: center; }
+.product-details-link:hover { text-decoration: underline; }
+.product-details-section { scroll-margin-top: 32px; }
+.product-details-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.product-description-panel, .product-specifications-panel { min-width: 0; border: 1px solid var(--line); border-radius: 16px; padding: 28px; background: #fff; }
+.product-description-panel:only-child { grid-column: 1 / -1; }
+.product-description-content { color: var(--muted); font-size: 14px; line-height: 1.85; overflow-wrap: anywhere; }
+.product-description-content p { margin: 14px 0; }
+.product-description-content h3 { color: var(--navy, #0b1237); margin: 24px 0 10px; font-size: 16px; }
+.product-description-content ul { padding-left: 22px; margin: 12px 0 20px; display: grid; gap: 9px; }
+.product-description-content li::marker { color: var(--primary); }
+.product-specifications-panel h3 { margin: 0 0 18px; font-size: 18px; }
+.product-specifications-panel dl { display: block; margin: 0; }
+.product-specifications-panel dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 20px; padding: 15px 12px; line-height: 1.6; }
+.product-specifications-panel dl > div:nth-child(odd) { background: var(--light); border-radius: 6px; }
+.product-specifications-panel dd { overflow-wrap: anywhere; }
+@media (max-width: 800px) {
+  .product-details-layout { grid-template-columns: 1fr; gap: 18px; }
+  .product-description-panel, .product-specifications-panel { padding: 20px; }
+}
 .detail-image {
   border-radius: 14px;
   background: var(--light);
