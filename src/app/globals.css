@@ -37,12 +37,15 @@
 }
 body {
   margin: 0;
+  width: 100%;
+  overflow-x: clip;
   background: #fff;
   color: var(--ink);
   font-family: "DM Sans", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
+html { width: 100%; overflow-x: clip; }
 h1,
 h2,
 h3,
