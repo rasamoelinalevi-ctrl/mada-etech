@@ -49,10 +49,9 @@ async function filesBelow(directory: string): Promise<string[]> {
 function imageScore(file: string) {
   const normalized = file.toLowerCase();
   return (
-    (normalized.includes(`${path.sep}montage${path.sep}`) ? 100 : 0) +
-    (normalized.includes("mada e-tech") ? 50 : 0) +
-    (normalized.includes("marketplace") ? 20 : 0) -
-    (normalized.includes("capture d") ? 30 : 0)
+    (normalized.includes(`${path.sep}montage${path.sep}`) ? -1000 : 100) +
+    (normalized.includes("mada e-tech") ? -500 : 0) +
+    (normalized.includes("marketplace") ? -500 : 0)
   );
 }
 

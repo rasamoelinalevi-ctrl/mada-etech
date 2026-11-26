@@ -62,7 +62,7 @@ export default function Home() {
               <Image
                 key={slide?.id || "default"}
                 className="hero-slide-product"
-                src={slide?.image || "/images/airpods-max.webp"}
+                src={slide?.id === 'import-acer-acer-aspire-go-15-i5-1334u' ? '/images/products/acer-home-cutout.webp' : slide?.image || '/images/products/acer-home-cutout.webp'}
                 alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
                 width="550"
