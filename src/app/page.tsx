@@ -38,6 +38,9 @@ export default function Home() {
   }, [slides.length, carouselPaused]);
   return (
     <ShopShell>
+      {Object.values(homeCutouts).map((src) => (
+        <link key={src} rel="preload" as="image" href={src} />
+      ))}
       <div className="container home">
         <div className="hero-grid">
           <section
@@ -75,6 +78,8 @@ export default function Home() {
                 src={homeCutouts[slide?.id || ""] || slide?.image || '/images/products/acer-home-cutout.webp'}
                 alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
+                priority
+                sizes="(max-width: 760px) 86vw, 47vw"
                 width="550"
                 height="550"
               />
