@@ -512,6 +512,15 @@ header {
   color: #525b78;
   letter-spacing: -0.9px;
 }
+.brand-strip-item {
+  width: 130px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-strip-item .brand-logo-fallback { font-size: 20px; }
+.brand-strip-item .brand-logo-image { max-height: 32px; }
 .brand-strip .samsung-brand {
   font-size: 20px;
   font-weight: 800;

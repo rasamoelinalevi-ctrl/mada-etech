@@ -4,12 +4,14 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import { ShopShell, categoryIcons } from "@/components/shop-shell";
 import { ProductGrid, SectionTitle } from "@/components/product-card";
+import { BrandLogo } from "@/components/brand-logo";
 import { useStore } from "@/components/store-provider";
 import { categories, money } from "@/lib/data";
 import { useEffect, useState } from "react";
 export default function Home() {
   const { products, settings } = useStore();
   const live = products.filter((p) => p.active);
+  const popularBrands = [...new Set(live.map((p) => p.brand))].slice(0, 3);
   const featured = live.find((p) => p.featured) || live[0];
   const preparedIds = ["import-acer-acer-aspire-go-15-i5-1334u", "import-aigo-3-en-1-aigo", "import-asus-ecran-portable", "import-awei-speaker-bluetooth-awei"];
   const prepared = preparedIds.map((id) => live.find((product) => product.id === id)).filter((product): product is (typeof live)[number] => Boolean(product));
@@ -148,11 +150,11 @@ export default function Home() {
         </div>
         <div className="brand-strip">
           <span>LES MARQUES QUE VOUS AIMEZ</span>
-          <strong className="apple-brand">Apple</strong>
-          <strong className="samsung-brand">SAMSUNG</strong>
-          <strong>
-            amazon<span className="orange-dot">.</span>
-          </strong>
+          {popularBrands.map((brand) => (
+            <Link className="brand-strip-item" key={brand} href={`/catalogue?marque=${encodeURIComponent(brand)}`}>
+              <BrandLogo brand={brand} />
+            </Link>
+          ))}
           <Link href="/marques">
             Toutes nos marques <ArrowRight size={15} />
           </Link>
