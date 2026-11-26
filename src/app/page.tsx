@@ -99,7 +99,7 @@ export default function Home() {
           </section>
           <div className="hero-side">
             <Link
-              href="/catalogue?categorie=Smartphones"
+              href="/catalogue?categorie=Smartphones%20%26%20tablettes"
               className="promo-tile phone-tile"
             >
               <div>

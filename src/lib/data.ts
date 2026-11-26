@@ -64,10 +64,14 @@ export type Settings = {
   freeShipping: number;
 };
 export const categories = [
-  "Smartphones",
+  "Smartphones & tablettes",
   "Ordinateurs",
+  "Impression & projection",
+  "Réseau & connectivité",
   "Audio & son",
+  "Stockage",
   "Objets connectés",
+  "Énergie & charge",
   "Accessoires",
 ];
 export const money = (value: number) =>

@@ -33,6 +33,9 @@ export function ProductDetail({
   const p = ready
     ? products.find((x) => x.id === id && x.active)
     : initialProduct;
+  const productImages = p
+    ? [...new Set([p.image, ...(p.images || [])].filter(Boolean))]
+    : [];
   const variants = p?.group
     ? products.filter((x) => x.group === p.group && x.active)
     : [];
@@ -93,12 +96,10 @@ export function ProductDetail({
                 >
                   <Image
                     key={
-                      (p.images?.length ? p.images : [p.image])[selectedImage]
+                      productImages[selectedImage]
                     }
                     src={
-                      (p.images?.length ? p.images : [p.image])[
-                        selectedImage
-                      ] || p.image
+                      productImages[selectedImage] || p.image
                     }
                     alt={`${p.name} — vue ${selectedImage + 1}`}
                     width={700}
@@ -106,12 +107,12 @@ export function ProductDetail({
                     priority
                   />
                 </div>
-                {(p.images?.length || 0) > 1 && (
+                {productImages.length > 1 && (
                   <div
                     className="detail-thumbnails"
                     aria-label="Images du produit"
                   >
-                    {p.images!.map((image, index) => (
+                    {productImages.map((image, index) => (
                       <button
                         type="button"
                         key={`${image}-${index}`}
@@ -131,9 +132,7 @@ export function ProductDetail({
                 <Modal title={p.name} onClose={() => setZoom(false)}>
                   <Image
                     src={
-                      (p.images?.length ? p.images : [p.image])[
-                        selectedImage
-                      ] || p.image
+                      productImages[selectedImage] || p.image
                     }
                     alt={p.name}
                     width={1200}

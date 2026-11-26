@@ -21,10 +21,24 @@ import {
   Cable,
   House,
   LayoutGrid,
+  Printer,
+  Router,
+  HardDrive,
+  BatteryCharging,
 } from "lucide-react";
 import { useStore } from "./store-provider";
 import { categories, money } from "@/lib/data";
-export const categoryIcons = [Smartphone, Laptop, Headphones, Watch, Cable];
+export const categoryIcons = [
+  Smartphone,
+  Laptop,
+  Printer,
+  Router,
+  Headphones,
+  HardDrive,
+  Watch,
+  BatteryCharging,
+  Cable,
+];
 export function Brand({ light = false }: { light?: boolean }) {
   const { settings } = useStore();
   return (
