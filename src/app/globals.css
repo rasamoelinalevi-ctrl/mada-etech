@@ -1967,8 +1967,19 @@ footer {
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
   gap: 8px;
   margin: 30px 0;
+}
+.pagination-slot { display: inline-flex; align-items: center; gap: 8px; }
+.pagination-ellipsis { color: var(--muted); }
+.pagination button:disabled { opacity: .35; cursor: not-allowed; }
+@media (max-width: 760px) {
+  .pagination { gap: 5px; }
+  .pagination-slot { gap: 5px; }
+  .pagination button { min-width: 38px; min-height: 40px; padding: 7px; }
 }
 .pagination button {
   border: 1px solid var(--line);

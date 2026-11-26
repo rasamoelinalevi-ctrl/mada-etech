@@ -82,6 +82,10 @@ function CatalogueContent({ mode }: { mode: string }) {
           ? a.name.localeCompare(b.name)
           : Number(b.featured) - Number(a.featured),
   );
+  const pageCount = Math.ceil(filtered.length / 9);
+  const pageNumbers = [...new Set([1, page - 1, page, page + 1, pageCount])]
+    .filter((number) => number >= 1 && number <= pageCount)
+    .sort((a, b) => a - b);
   const toggle = (v: string, list: string[], set: (v: string[]) => void) => {
     set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
     setPage(1);
@@ -204,21 +208,24 @@ function CatalogueContent({ mode }: { mode: string }) {
               <ProductGrid
                 products={filtered.slice((page - 1) * 9, page * 9)}
               />
-              {filtered.length > 9 && (
-                <div className="pagination">
-                  {Array.from(
-                    { length: Math.ceil(filtered.length / 9) },
-                    (_, i) => (
+              {pageCount > 1 && (
+                <nav className="pagination" aria-label="Pages du catalogue">
+                  <button disabled={page === 1} onClick={() => setPage(page - 1)} aria-label="Page précédente">‹</button>
+                  {pageNumbers.map((number, index) => (
+                    <span className="pagination-slot" key={number}>
+                      {index > 0 && number - pageNumbers[index - 1] > 1 && <span className="pagination-ellipsis" aria-hidden="true">…</span>}
                       <button
-                        className={page === i + 1 ? "active" : ""}
-                        key={i}
-                        onClick={() => setPage(i + 1)}
+                        className={page === number ? "active" : ""}
+                        aria-current={page === number ? "page" : undefined}
+                        aria-label={`Page ${number}`}
+                        onClick={() => setPage(number)}
                       >
-                        {i + 1}
+                        {number}
                       </button>
-                    ),
-                  )}
-                </div>
+                    </span>
+                  ))}
+                  <button disabled={page === pageCount} onClick={() => setPage(page + 1)} aria-label="Page suivante">›</button>
+                </nav>
               )}
             </>
           ) : (
