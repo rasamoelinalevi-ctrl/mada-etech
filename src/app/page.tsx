@@ -11,10 +11,9 @@ export default function Home() {
   const { products, settings } = useStore();
   const live = products.filter((p) => p.active);
   const featured = live.find((p) => p.featured) || live[0];
-  // Keep the hero populated even when the admin has not marked enough products as featured.
-  const slides = (live.filter((p) => p.featured).length >= 4
-    ? live.filter((p) => p.featured)
-    : live.slice(0, 4)).slice(0, 4);
+  const preparedIds = ["import-acer-acer-aspire-go-15-i5-1334u", "import-aigo-3-en-1-aigo", "import-asus-ecran-portable", "import-awei-speaker-bluetooth-awei"];
+  const prepared = preparedIds.map((id) => live.find((product) => product.id === id)).filter((product): product is (typeof live)[number] => Boolean(product));
+  const slides = prepared.length ? prepared : live.filter((p) => p.featured).slice(0, 4);
   const [slideIndex, setSlideIndex] = useState(0);
   const [carouselPaused, setCarouselPaused] = useState(false);
   const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
@@ -52,8 +51,8 @@ export default function Home() {
               <span className="hero-label">
                 <span /> L’UNIVERS MADA E-TECH
               </span>
-              <h1>{slideIndex === 0 ? settings.heroTitle : slide?.name}</h1>
-              <p>{slideIndex === 0 ? settings.heroText : slide?.description}</p>
+              <h1>{slide?.name || settings.heroTitle}</h1>
+              <p>{slide?.category}</p>
               <Link
                 href={slide ? "/produit/" + slide.id : "/catalogue"}
                 className="button primary-cta"

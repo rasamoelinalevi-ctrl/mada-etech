@@ -2793,6 +2793,7 @@ footer {
 .hero-main {
   background: linear-gradient(120deg, #0a1135 5%, #101b51 100%);
 }
+.hero-label, .hero-caption, .hero-bigtype { display: none; }
 .hero-carousel-controls {
   position: absolute;
   z-index: 4;
