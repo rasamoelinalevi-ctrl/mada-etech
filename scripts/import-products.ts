@@ -31,6 +31,8 @@ const target = (option("url") || process.env.IMPORT_APP_URL || "").replace(
   "",
 );
 const importAll = process.argv.includes("--all");
+const publish = process.argv.includes("--publish");
+const initialStock = publish ? 1 : 0;
 const limit = importAll
   ? 1000
   : Math.min(Math.max(Number(option("limit") || 10), 1), 1000);
@@ -256,14 +258,14 @@ for (const candidate of selected) {
       category: categoryFor(candidate.folder, description),
       price: entry.price,
       oldPrice: 0,
-      stock: 0,
+      stock: initialStock,
       image,
       images,
       description,
       specs: specsFromText(source),
       isNew: true,
       featured: false,
-      active: false,
+      active: publish,
       source: {
         textFile: candidate.textFile,
         imageFiles: candidate.imageFiles,
@@ -364,5 +366,5 @@ for (const product of products) {
   console.log(`Importé comme brouillon : ${product.name}`);
 }
 console.log(
-  `${imported} produit(s) importé(s), inactifs et avec un stock à 0.`,
+  `${imported} produit(s) importé(s), ${publish ? "actifs et avec un stock initial de 1" : "inactifs et avec un stock à 0"}.`,
 );
