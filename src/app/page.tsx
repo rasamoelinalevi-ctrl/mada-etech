@@ -11,10 +11,19 @@ export default function Home() {
   const { products, settings } = useStore();
   const live = products.filter((p) => p.active);
   const featured = live.find((p) => p.featured) || live[0];
-  const slides = live.filter((p) => p.featured).slice(0, 4);
+  // Keep the hero populated even when the admin has not marked enough products as featured.
+  const slides = (live.filter((p) => p.featured).length >= 4
+    ? live.filter((p) => p.featured)
+    : live.slice(0, 4)).slice(0, 4);
   const [slideIndex, setSlideIndex] = useState(0);
   const [carouselPaused, setCarouselPaused] = useState(false);
   const slide = slides[slideIndex % Math.max(slides.length, 1)] || featured;
+  const homeCutouts: Record<string, string> = {
+    "import-acer-acer-aspire-go-15-i5-1334u": "/images/products/acer-home-cutout.webp",
+    "import-aigo-3-en-1-aigo": "/images/products/import-aigo-3-en-1-aigo-cutout.png",
+    "import-asus-ecran-portable": "/images/products/import-asus-ecran-portable-cutout.png",
+    "import-awei-speaker-bluetooth-awei": "/images/products/import-awei-speaker-bluetooth-awei-cutout.png",
+  };
   const changeSlide = (direction: number) => {
     if (slides.length < 2) return;
     setSlideIndex((index) => (index + direction + slides.length) % slides.length);
@@ -62,7 +71,7 @@ export default function Home() {
               <Image
                 key={slide?.id || "default"}
                 className="hero-slide-product"
-                src={slide?.id === 'import-acer-acer-aspire-go-15-i5-1334u' ? '/images/products/acer-home-cutout.webp' : slide?.image || '/images/products/acer-home-cutout.webp'}
+                src={homeCutouts[slide?.id || ""] || slide?.image || '/images/products/acer-home-cutout.webp'}
                 alt={slide?.name || "Sélection électronique"}
                 fetchPriority="high"
                 width="550"
@@ -181,7 +190,7 @@ export default function Home() {
             title="Les incontournables"
             href="/catalogue"
           />
-          <ProductGrid products={live.filter((p) => p.featured).slice(0, 4)} />
+          <ProductGrid products={slides} />
         </section>
         <section className="wide-promo">
           <div>
