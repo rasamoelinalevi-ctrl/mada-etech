@@ -683,6 +683,7 @@ header {
   padding: 18px;
 }
 .brand-logo-image { display: block; width: 100%; height: 100%; object-fit: contain; }
+.brand-logo-square { object-fit: cover; }
 .brand-logo-fallback { font-size: 13px; font-weight: 750; letter-spacing: .06em; color: var(--primary); }
 .product-brand-logo { width: 90px; height: 28px; display: flex; align-items: center; margin-bottom: 7px; }
 .detail-brand-logo { width: 145px; height: 48px; display: flex; align-items: center; margin-bottom: 14px; }
@@ -1504,6 +1505,7 @@ footer {
   border-radius: 12px;
 }
 .brand-card-logo { width: 160px; height: 64px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
+.brand-card:has(.brand-card-logo) { padding-top: 64px; }
 .brand-card-logo .brand-logo-fallback { font-size: 24px; }
 .brand-card strong {
   font-size: 32px;

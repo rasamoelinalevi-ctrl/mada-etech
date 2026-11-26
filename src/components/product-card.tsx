@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Heart, Plus, ArrowUpRight } from "lucide-react";
 import { type Product, money } from "@/lib/data";
 import { useStore } from "./store-provider";
-import { BrandLogo } from "./brand-logo";
+import { BrandLogo, hasBrandLogo } from "./brand-logo";
 export function ProductCard({ product: p }: { product: Product }) {
   const { add, favorite, favorites } = useStore();
   const discount =
@@ -49,7 +49,7 @@ export function ProductCard({ product: p }: { product: Product }) {
       <div className="product-info">
         <div className="product-brand-logo"><BrandLogo brand={p.brand} /></div>
         <span className="eyebrow muted">
-          {p.brand} <span>· {p.category}</span>
+          {hasBrandLogo(p.brand) ? p.category : <>{p.brand} <span>· {p.category}</span></>}
         </span>
         <Link href={"/produit/" + p.id}>
           <h3>{p.name}</h3>

@@ -26,10 +26,10 @@ export default function Page() {
               href={"/catalogue?marque=" + encodeURIComponent(b)}
             >
               {hasBrandLogo(b) && <div className="brand-card-logo"><BrandLogo brand={b} /></div>}
-              <strong>{b}</strong>
+              {!hasBrandLogo(b) && <strong>{b}</strong>}
               <p>
                 {products.filter((p) => p.active && p.brand === b).length}{" "}
-                produits à découvrir
+                {products.filter((p) => p.active && p.brand === b).length === 1 ? "produit à découvrir" : "produits à découvrir"}
               </p>
               <span>Explorer la collection ↗</span>
             </Link>

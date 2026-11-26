@@ -16,7 +16,7 @@ import { useStore } from "./store-provider";
 import { money, type Product } from "@/lib/data";
 import { Modal } from "./modal";
 import { ProductDescription, descriptionLines } from "./product-description";
-import { BrandLogo } from "./brand-logo";
+import { BrandLogo, hasBrandLogo } from "./brand-logo";
 export function ProductDetail({
   id,
   initialProduct,
@@ -131,7 +131,7 @@ export function ProductDetail({
                   className="eyebrow brand-text"
                   href={"/catalogue?marque=" + encodeURIComponent(p.brand)}
                 >
-                  {p.brand} · {p.category}
+                  {hasBrandLogo(p.brand) ? p.category : `${p.brand} · ${p.category}`}
                 </Link>
                 <h1>{p.name}</h1>
                 {p.group && (
